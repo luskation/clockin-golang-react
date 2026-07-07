@@ -14,7 +14,7 @@ type User struct {
 	CompanyID string    `json:"company_id"`
 	Name      string    `json:"name"`
 	Email     string    `json:"email"`
-	Password  string    `json:"-"`
+	Password  string    `json:"password,omitempty"`
 	Role      Role      `json:"role"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`

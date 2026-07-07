@@ -26,6 +26,7 @@ func (h *UserHandler) Create(c *gin.Context) {
 		handleError(c, err)
 		return
 	}
+	input.Password = ""
 	c.JSON(http.StatusCreated, input)
 }
 
@@ -35,6 +36,7 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 		handleError(c, err)
 		return
 	}
+	user.Password = ""
 	c.JSON(http.StatusOK, user)
 }
 
@@ -43,6 +45,9 @@ func (h *UserHandler) List(c *gin.Context) {
 	if err != nil {
 		handleError(c, err)
 		return
+	}
+	for i := range users {
+		users[i].Password = ""
 	}
 	c.JSON(http.StatusOK, users)
 }
@@ -58,6 +63,7 @@ func (h *UserHandler) Update(c *gin.Context) {
 		handleError(c, err)
 		return
 	}
+	input.Password = ""
 	c.JSON(http.StatusOK, input)
 }
 

@@ -53,9 +53,10 @@ func (r *UserRepository) List(ctx context.Context) ([]domain.User, error) {
 }
 
 func (r *UserRepository) Update(ctx context.Context, u *domain.User) error {
-	query := `UPDATE users SET name = $1, email = $2, role = $3, updated_at = NOW() WHERE id = $4`
-	_, err := r.db.Exec(ctx, query, u.Name, u.Email, u.Role, u.ID)
-	return err
+	query := `UPDATE users SET name = $1, email = $2, role = $3, updated_at = NOW() WHERE id = $4
+	          RETURNING company_id, created_at, updated_at`
+	return r.db.QueryRow(ctx, query, u.Name, u.Email, u.Role, u.ID).
+		Scan(&u.CompanyID, &u.CreatedAt, &u.UpdatedAt)
 }
 
 func (r *UserRepository) Delete(ctx context.Context, id string) error {
