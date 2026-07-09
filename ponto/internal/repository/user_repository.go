@@ -33,6 +33,17 @@ func (r *UserRepository) GetByID(ctx context.Context, id string) (*domain.User, 
 	return u, nil
 }
 
+func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*domain.User, error) {
+	query := `SELECT id, company_id, name, email, password, role, created_at, updated_at FROM users WHERE email = $1`
+	u := &domain.User{}
+	err := r.db.QueryRow(ctx, query, email).
+		Scan(&u.ID, &u.CompanyID, &u.Name, &u.Email, &u.Password, &u.Role, &u.CreatedAt, &u.UpdatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 func (r *UserRepository) List(ctx context.Context) ([]domain.User, error) {
 	query := `SELECT id, company_id, name, email, password, role, created_at, updated_at FROM users ORDER BY created_at DESC`
 	rows, err := r.db.Query(ctx, query)
@@ -57,6 +68,11 @@ func (r *UserRepository) Update(ctx context.Context, u *domain.User) error {
 	          RETURNING company_id, created_at, updated_at`
 	return r.db.QueryRow(ctx, query, u.Name, u.Email, u.Role, u.ID).
 		Scan(&u.CompanyID, &u.CreatedAt, &u.UpdatedAt)
+}
+
+func (r *UserRepository) UpdatePassword(ctx context.Context, id, hashedPassword string) error {
+	_, err := r.db.Exec(ctx, `UPDATE users SET password = $1, updated_at = NOW() WHERE id = $2`, hashedPassword, id)
+	return err
 }
 
 func (r *UserRepository) Delete(ctx context.Context, id string) error {
