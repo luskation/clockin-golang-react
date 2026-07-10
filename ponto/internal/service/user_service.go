@@ -88,7 +88,10 @@ func (s *UserService) UpdatePassword(ctx context.Context, id, newPassword string
 	return s.repo.UpdatePassword(ctx, id, string(hashed))
 }
 
-func (s *UserService) Delete(ctx context.Context, id string) error {
+func (s *UserService) Delete(ctx context.Context, requesterID, id string) error {
+	if requesterID == id {
+		return apperr.BadRequest("não é possível excluir o próprio usuário")
+	}
 	if _, err := s.repo.GetByID(ctx, id); err != nil {
 		return apperr.NotFound("usuário não encontrado")
 	}
