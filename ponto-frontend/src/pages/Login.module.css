@@ -1,0 +1,134 @@
+.screen {
+  min-height: 100vh;
+  display: flex;
+}
+
+.clockPanel {
+  flex: 1 1 45%;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-8);
+}
+
+.date {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-brass-soft);
+}
+
+.time {
+  font-family: var(--font-mono);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  margin-top: var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.divider {
+  width: 3rem;
+  height: 2px;
+  background: var(--color-brass);
+  margin: var(--space-5) 0;
+}
+
+.brand {
+  font-size: var(--text-xl);
+}
+
+.tagline {
+  margin-top: var(--space-3);
+  max-width: 24rem;
+  color: var(--color-brass-soft);
+  line-height: 1.5;
+}
+
+.formPanel {
+  flex: 1 1 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-paper);
+  padding: var(--space-6);
+}
+
+.form {
+  width: 100%;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.formTitle {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-5);
+}
+
+.label {
+  font-size: var(--text-sm);
+  color: var(--color-graphite);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+}
+
+.input {
+  font-size: var(--text-base);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.input:focus-visible {
+  border-color: var(--color-brass);
+}
+
+.error {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-alert);
+}
+
+.submit {
+  margin-top: var(--space-6);
+  padding: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  background: var(--color-brass);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.submit:hover {
+  background: var(--color-brass-soft);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+@media (max-width: 768px) {
+  .screen {
+    flex-direction: column;
+  }
+
+  .clockPanel {
+    flex: none;
+    padding: var(--space-6);
+  }
+
+  .formPanel {
+    flex: none;
+    padding: var(--space-6) var(--space-4);
+  }
+}
