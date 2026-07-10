@@ -47,6 +47,10 @@ func main() {
 	userHandler := handler.NewUserHandler(userService)
 	authHandler := handler.NewAuthHandler(userService)
 
+	timeEntryRepo := repository.NewTimeEntryRepository(pool)
+	timeEntryService := service.NewTimeEntryService(timeEntryRepo)
+	timeEntryHandler := handler.NewTimeEntryHandler(timeEntryService)
+
 	api := r.Group("/api/v1")
 	{
 		api.POST("/auth/login", authHandler.Login)
@@ -64,6 +68,10 @@ func main() {
 		api.GET("/users/:id", middleware.AuthRequired(), userHandler.GetByID)
 		api.PUT("/users/:id", middleware.AuthRequired(), userHandler.Update)
 		api.DELETE("/users/:id", middleware.AuthRequired(), middleware.AdminOnly(), userHandler.Delete)
+
+		api.POST("/time-entries", middleware.AuthRequired(), timeEntryHandler.Register)
+		api.GET("/time-entries/me", middleware.AuthRequired(), timeEntryHandler.ListMine)
+		api.GET("/time-entries", middleware.AuthRequired(), middleware.AdminOnly(), timeEntryHandler.ListAll)
 	}
 
 	log.Println("servidor rodando em :8080")
