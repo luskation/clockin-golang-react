@@ -72,6 +72,8 @@ func main() {
 		api.POST("/time-entries", middleware.AuthRequired(), timeEntryHandler.Register)
 		api.GET("/time-entries/me", middleware.AuthRequired(), timeEntryHandler.ListMine)
 		api.GET("/time-entries", middleware.AuthRequired(), middleware.AdminOnly(), timeEntryHandler.ListAll)
+		api.PUT("/time-entries/:id", middleware.AuthRequired(), timeEntryHandler.Update)
+		api.DELETE("/time-entries/:id", middleware.AuthRequired(), timeEntryHandler.Delete)
 	}
 
 	log.Println("servidor rodando em :8080")

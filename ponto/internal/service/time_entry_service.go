@@ -41,6 +41,32 @@ func (s *TimeEntryService) RegisterEntry(ctx context.Context, userID string) (*d
 	return entry, nil
 }
 
+func (s *TimeEntryService) Update(ctx context.Context, requesterID, requesterRole string, e *domain.TimeEntry) error {
+	existing, err := s.repo.GetByID(ctx, e.ID)
+	if err != nil {
+		return apperr.NotFound("registro de ponto não encontrado")
+	}
+	if existing.UserID != requesterID && requesterRole != string(domain.RoleAdmin) {
+		return apperr.Forbidden("apenas o dono do registro ou um admin pode editá-lo")
+	}
+	if e.Type != domain.ClockIn && e.Type != domain.ClockOut {
+		return apperr.BadRequest("type deve ser clock_in ou clock_out")
+	}
+	e.UserID = existing.UserID
+	return s.repo.Update(ctx, e)
+}
+
+func (s *TimeEntryService) Delete(ctx context.Context, requesterID, requesterRole, id string) error {
+	existing, err := s.repo.GetByID(ctx, id)
+	if err != nil {
+		return apperr.NotFound("registro de ponto não encontrado")
+	}
+	if existing.UserID != requesterID && requesterRole != string(domain.RoleAdmin) {
+		return apperr.Forbidden("apenas o dono do registro ou um admin pode excluí-lo")
+	}
+	return s.repo.Delete(ctx, id)
+}
+
 func (s *TimeEntryService) ListByUser(ctx context.Context, userID string, page, limit int) ([]domain.TimeEntry, int, error) {
 	return s.repo.ListByUser(ctx, userID, page, limit)
 }

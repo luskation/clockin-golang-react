@@ -38,6 +38,29 @@ func (r *TimeEntryRepository) GetLastByUser(ctx context.Context, userID string) 
 	return e, nil
 }
 
+func (r *TimeEntryRepository) GetByID(ctx context.Context, id string) (*domain.TimeEntry, error) {
+	query := `SELECT id, user_id, type, recorded_at, note, created_at FROM time_entries WHERE id = $1`
+	e := &domain.TimeEntry{}
+	err := r.db.QueryRow(ctx, query, id).
+		Scan(&e.ID, &e.UserID, &e.Type, &e.RecordedAt, &e.Note, &e.CreatedAt)
+	if err != nil {
+		return nil, err
+	}
+	return e, nil
+}
+
+func (r *TimeEntryRepository) Update(ctx context.Context, e *domain.TimeEntry) error {
+	query := `UPDATE time_entries SET type = $1, recorded_at = $2, note = $3 WHERE id = $4
+	          RETURNING user_id, created_at`
+	return r.db.QueryRow(ctx, query, e.Type, e.RecordedAt, e.Note, e.ID).
+		Scan(&e.UserID, &e.CreatedAt)
+}
+
+func (r *TimeEntryRepository) Delete(ctx context.Context, id string) error {
+	_, err := r.db.Exec(ctx, `DELETE FROM time_entries WHERE id = $1`, id)
+	return err
+}
+
 func (r *TimeEntryRepository) ListByUser(ctx context.Context, userID string, page, limit int) ([]domain.TimeEntry, int, error) {
 	var total int
 	if err := r.db.QueryRow(ctx, `SELECT COUNT(*) FROM time_entries WHERE user_id = $1`, userID).Scan(&total); err != nil {
