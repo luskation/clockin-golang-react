@@ -1,0 +1,71 @@
+.page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6);
+}
+
+.eyebrow {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-brass);
+}
+
+.title {
+  margin-top: var(--space-2);
+  font-size: var(--text-2xl);
+}
+
+.subtitle {
+  margin-top: var(--space-3);
+  max-width: 34rem;
+  color: var(--color-graphite);
+  line-height: 1.5;
+}
+
+.grid {
+  margin-top: var(--space-6);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.card:hover {
+  border-color: var(--color-brass);
+  transform: translateY(-2px);
+}
+
+.cardLabel {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.cardHint {
+  font-size: var(--text-sm);
+  color: var(--color-graphite);
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page {
+    padding: var(--space-6) var(--space-4);
+  }
+}
