@@ -37,8 +37,8 @@ func (s *CompanyService) GetByID(ctx context.Context, id string) (*domain.Compan
 	return c, nil
 }
 
-func (s *CompanyService) List(ctx context.Context) ([]domain.Company, error) {
-	return s.repo.List(ctx)
+func (s *CompanyService) List(ctx context.Context, page, limit int) ([]domain.Company, int, error) {
+	return s.repo.List(ctx, page, limit)
 }
 
 func (s *CompanyService) Update(ctx context.Context, c *domain.Company) error {

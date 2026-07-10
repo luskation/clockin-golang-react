@@ -33,11 +33,18 @@ func (r *CompanyRepository) GetByID(ctx context.Context, id string) (*domain.Com
 	return c, nil
 }
 
-func (r *CompanyRepository) List(ctx context.Context) ([]domain.Company, error) {
-	query := `SELECT id, name, cnpj, created_at, updated_at FROM companies ORDER BY created_at DESC`
-	rows, err := r.db.Query(ctx, query)
+func (r *CompanyRepository) List(ctx context.Context, page, limit int) ([]domain.Company, int, error) {
+	var total int
+	if err := r.db.QueryRow(ctx, `SELECT COUNT(*) FROM companies`).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * limit
+	query := `SELECT id, name, cnpj, created_at, updated_at
+	          FROM companies ORDER BY created_at DESC LIMIT $1 OFFSET $2`
+	rows, err := r.db.Query(ctx, query, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -45,11 +52,11 @@ func (r *CompanyRepository) List(ctx context.Context) ([]domain.Company, error) 
 	for rows.Next() {
 		var c domain.Company
 		if err := rows.Scan(&c.ID, &c.Name, &c.CNPJ, &c.CreatedAt, &c.UpdatedAt); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		companies = append(companies, c)
 	}
-	return companies, nil
+	return companies, total, nil
 }
 
 func (r *CompanyRepository) Update(ctx context.Context, c *domain.Company) error {

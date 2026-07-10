@@ -25,19 +25,21 @@ func (h *TimeEntryHandler) Register(c *gin.Context) {
 }
 
 func (h *TimeEntryHandler) ListMine(c *gin.Context) {
-	entries, err := h.service.ListByUser(c.Request.Context(), c.GetString("user_id"))
+	page, limit := parsePagination(c)
+	entries, total, err := h.service.ListByUser(c.Request.Context(), c.GetString("user_id"), page, limit)
 	if err != nil {
 		handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, entries)
+	c.JSON(http.StatusOK, PaginatedResponse{Data: entries, Page: page, Limit: limit, Total: total})
 }
 
 func (h *TimeEntryHandler) ListAll(c *gin.Context) {
-	entries, err := h.service.ListAll(c.Request.Context())
+	page, limit := parsePagination(c)
+	entries, total, err := h.service.ListAll(c.Request.Context(), page, limit)
 	if err != nil {
 		handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, entries)
+	c.JSON(http.StatusOK, PaginatedResponse{Data: entries, Page: page, Limit: limit, Total: total})
 }

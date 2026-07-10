@@ -41,7 +41,8 @@ func (h *UserHandler) GetByID(c *gin.Context) {
 }
 
 func (h *UserHandler) List(c *gin.Context) {
-	users, err := h.service.List(c.Request.Context())
+	page, limit := parsePagination(c)
+	users, total, err := h.service.List(c.Request.Context(), page, limit)
 	if err != nil {
 		handleError(c, err)
 		return
@@ -49,7 +50,7 @@ func (h *UserHandler) List(c *gin.Context) {
 	for i := range users {
 		users[i].Password = ""
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, PaginatedResponse{Data: users, Page: page, Limit: limit, Total: total})
 }
 
 func (h *UserHandler) Update(c *gin.Context) {

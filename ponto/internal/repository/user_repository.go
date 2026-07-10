@@ -44,11 +44,18 @@ func (r *UserRepository) GetByEmail(ctx context.Context, email string) (*domain.
 	return u, nil
 }
 
-func (r *UserRepository) List(ctx context.Context) ([]domain.User, error) {
-	query := `SELECT id, company_id, name, email, password, role, created_at, updated_at FROM users ORDER BY created_at DESC`
-	rows, err := r.db.Query(ctx, query)
+func (r *UserRepository) List(ctx context.Context, page, limit int) ([]domain.User, int, error) {
+	var total int
+	if err := r.db.QueryRow(ctx, `SELECT COUNT(*) FROM users`).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * limit
+	query := `SELECT id, company_id, name, email, password, role, created_at, updated_at
+	          FROM users ORDER BY created_at DESC LIMIT $1 OFFSET $2`
+	rows, err := r.db.Query(ctx, query, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -56,11 +63,11 @@ func (r *UserRepository) List(ctx context.Context) ([]domain.User, error) {
 	for rows.Next() {
 		var u domain.User
 		if err := rows.Scan(&u.ID, &u.CompanyID, &u.Name, &u.Email, &u.Password, &u.Role, &u.CreatedAt, &u.UpdatedAt); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		users = append(users, u)
 	}
-	return users, nil
+	return users, total, nil
 }
 
 func (r *UserRepository) Update(ctx context.Context, u *domain.User) error {

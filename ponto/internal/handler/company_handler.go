@@ -39,12 +39,13 @@ func (h *CompanyHandler) GetByID(c *gin.Context) {
 }
 
 func (h *CompanyHandler) List(c *gin.Context) {
-	companies, err := h.service.List(c.Request.Context())
+	page, limit := parsePagination(c)
+	companies, total, err := h.service.List(c.Request.Context(), page, limit)
 	if err != nil {
 		handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, companies)
+	c.JSON(http.StatusOK, PaginatedResponse{Data: companies, Page: page, Limit: limit, Total: total})
 }
 
 func (h *CompanyHandler) Update(c *gin.Context) {

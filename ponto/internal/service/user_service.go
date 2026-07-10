@@ -57,8 +57,8 @@ func (s *UserService) GetByID(ctx context.Context, id string) (*domain.User, err
 	return u, nil
 }
 
-func (s *UserService) List(ctx context.Context) ([]domain.User, error) {
-	return s.repo.List(ctx)
+func (s *UserService) List(ctx context.Context, page, limit int) ([]domain.User, int, error) {
+	return s.repo.List(ctx, page, limit)
 }
 
 func (s *UserService) Update(ctx context.Context, u *domain.User) error {

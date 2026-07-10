@@ -41,10 +41,10 @@ func (s *TimeEntryService) RegisterEntry(ctx context.Context, userID string) (*d
 	return entry, nil
 }
 
-func (s *TimeEntryService) ListByUser(ctx context.Context, userID string) ([]domain.TimeEntry, error) {
-	return s.repo.ListByUser(ctx, userID)
+func (s *TimeEntryService) ListByUser(ctx context.Context, userID string, page, limit int) ([]domain.TimeEntry, int, error) {
+	return s.repo.ListByUser(ctx, userID, page, limit)
 }
 
-func (s *TimeEntryService) ListAll(ctx context.Context) ([]domain.TimeEntry, error) {
-	return s.repo.ListAll(ctx)
+func (s *TimeEntryService) ListAll(ctx context.Context, page, limit int) ([]domain.TimeEntry, int, error) {
+	return s.repo.ListAll(ctx, page, limit)
 }

@@ -38,12 +38,18 @@ func (r *TimeEntryRepository) GetLastByUser(ctx context.Context, userID string) 
 	return e, nil
 }
 
-func (r *TimeEntryRepository) ListByUser(ctx context.Context, userID string) ([]domain.TimeEntry, error) {
+func (r *TimeEntryRepository) ListByUser(ctx context.Context, userID string, page, limit int) ([]domain.TimeEntry, int, error) {
+	var total int
+	if err := r.db.QueryRow(ctx, `SELECT COUNT(*) FROM time_entries WHERE user_id = $1`, userID).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * limit
 	query := `SELECT id, user_id, type, recorded_at, note, created_at FROM time_entries
-              WHERE user_id = $1 ORDER BY recorded_at DESC`
-	rows, err := r.db.Query(ctx, query, userID)
+              WHERE user_id = $1 ORDER BY recorded_at DESC LIMIT $2 OFFSET $3`
+	rows, err := r.db.Query(ctx, query, userID, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -51,19 +57,25 @@ func (r *TimeEntryRepository) ListByUser(ctx context.Context, userID string) ([]
 	for rows.Next() {
 		var e domain.TimeEntry
 		if err := rows.Scan(&e.ID, &e.UserID, &e.Type, &e.RecordedAt, &e.Note, &e.CreatedAt); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		entries = append(entries, e)
 	}
-	return entries, nil
+	return entries, total, nil
 }
 
-func (r *TimeEntryRepository) ListAll(ctx context.Context) ([]domain.TimeEntry, error) {
+func (r *TimeEntryRepository) ListAll(ctx context.Context, page, limit int) ([]domain.TimeEntry, int, error) {
+	var total int
+	if err := r.db.QueryRow(ctx, `SELECT COUNT(*) FROM time_entries`).Scan(&total); err != nil {
+		return nil, 0, err
+	}
+
+	offset := (page - 1) * limit
 	query := `SELECT id, user_id, type, recorded_at, note, created_at FROM time_entries
-              ORDER BY recorded_at DESC`
-	rows, err := r.db.Query(ctx, query)
+              ORDER BY recorded_at DESC LIMIT $1 OFFSET $2`
+	rows, err := r.db.Query(ctx, query, limit, offset)
 	if err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	defer rows.Close()
 
@@ -71,9 +83,9 @@ func (r *TimeEntryRepository) ListAll(ctx context.Context) ([]domain.TimeEntry, 
 	for rows.Next() {
 		var e domain.TimeEntry
 		if err := rows.Scan(&e.ID, &e.UserID, &e.Type, &e.RecordedAt, &e.Note, &e.CreatedAt); err != nil {
-			return nil, err
+			return nil, 0, err
 		}
 		entries = append(entries, e)
 	}
-	return entries, nil
+	return entries, total, nil
 }
