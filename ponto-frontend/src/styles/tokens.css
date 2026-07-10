@@ -1,0 +1,46 @@
+:root {
+  /* Cor — paleta "relógio de ponto": azul-carvão + latão, sem preto puro nem creme */
+  --color-ink: #1c2333;
+  --color-ink-soft: #2a3346;
+  --color-brass: #c08a3e;
+  --color-brass-soft: #d9ab6b;
+  --color-paper: #eef1f0;
+  --color-surface: #ffffff;
+  --color-graphite: #5b6472;
+  --color-border: #d7dbdd;
+  --color-success: #3e7a5d;
+  --color-alert: #b0483a;
+
+  /* Tipografia */
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+
+  /* Espaçamento */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+
+  /* Forma */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  /*
+   * Breakpoints (referência — custom properties não funcionam dentro de @media,
+   * por isso os valores abaixo são repetidos como literais nos módulos CSS):
+   * mobile:  até 480px
+   * tablet:  480px – 768px
+   * desktop: acima de 1024px
+   */
+}
