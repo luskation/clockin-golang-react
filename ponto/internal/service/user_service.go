@@ -2,12 +2,15 @@ package service
 
 import (
 	"context"
+	"regexp"
 
 	"github.com/luskation/ponto/internal/apperr"
 	"github.com/luskation/ponto/internal/domain"
 	"github.com/luskation/ponto/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var emailRegex = regexp.MustCompile(`^[^\s@]+@[^\s@]+\.[^\s@]+$`)
 
 type UserService struct {
 	repo *repository.UserRepository
@@ -20,6 +23,12 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 func (s *UserService) Create(ctx context.Context, u *domain.User) error {
 	if u.CompanyID == "" || u.Name == "" || u.Email == "" || u.Password == "" {
 		return apperr.BadRequest("company_id, name, email e password são obrigatórios")
+	}
+	if !emailRegex.MatchString(u.Email) {
+		return apperr.BadRequest("email em formato inválido")
+	}
+	if len(u.Password) < 6 {
+		return apperr.BadRequest("senha deve ter ao menos 6 caracteres")
 	}
 	if u.Role == "" {
 		u.Role = domain.RoleEmployee
@@ -56,6 +65,9 @@ func (s *UserService) Update(ctx context.Context, u *domain.User) error {
 	if u.Name == "" || u.Email == "" {
 		return apperr.BadRequest("name e email são obrigatórios")
 	}
+	if !emailRegex.MatchString(u.Email) {
+		return apperr.BadRequest("email em formato inválido")
+	}
 	if _, err := s.repo.GetByID(ctx, u.ID); err != nil {
 		return apperr.NotFound("usuário não encontrado")
 	}
@@ -63,6 +75,9 @@ func (s *UserService) Update(ctx context.Context, u *domain.User) error {
 }
 
 func (s *UserService) UpdatePassword(ctx context.Context, id, newPassword string) error {
+	if len(newPassword) < 6 {
+		return apperr.BadRequest("senha deve ter ao menos 6 caracteres")
+	}
 	if _, err := s.repo.GetByID(ctx, id); err != nil {
 		return apperr.NotFound("usuário não encontrado")
 	}

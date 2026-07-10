@@ -2,11 +2,14 @@ package service
 
 import (
 	"context"
+	"regexp"
 
 	"github.com/luskation/ponto/internal/apperr"
 	"github.com/luskation/ponto/internal/domain"
 	"github.com/luskation/ponto/internal/repository"
 )
+
+var cnpjRegex = regexp.MustCompile(`^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$`)
 
 type CompanyService struct {
 	repo *repository.CompanyRepository
@@ -19,6 +22,9 @@ func NewCompanyService(repo *repository.CompanyRepository) *CompanyService {
 func (s *CompanyService) Create(ctx context.Context, c *domain.Company) error {
 	if c.Name == "" || c.CNPJ == "" {
 		return apperr.BadRequest("name e cnpj são obrigatórios")
+	}
+	if !cnpjRegex.MatchString(c.CNPJ) {
+		return apperr.BadRequest("cnpj em formato inválido, use 00.000.000/0000-00")
 	}
 	return s.repo.Create(ctx, c)
 }
@@ -38,6 +44,9 @@ func (s *CompanyService) List(ctx context.Context) ([]domain.Company, error) {
 func (s *CompanyService) Update(ctx context.Context, c *domain.Company) error {
 	if c.Name == "" || c.CNPJ == "" {
 		return apperr.BadRequest("name e cnpj são obrigatórios")
+	}
+	if !cnpjRegex.MatchString(c.CNPJ) {
+		return apperr.BadRequest("cnpj em formato inválido, use 00.000.000/0000-00")
 	}
 	if _, err := s.repo.GetByID(ctx, c.ID); err != nil {
 		return apperr.NotFound("empresa não encontrada")
