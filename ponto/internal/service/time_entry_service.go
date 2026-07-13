@@ -21,7 +21,7 @@ func NewTimeEntryService(repo *repository.TimeEntryRepository) *TimeEntryService
 func (s *TimeEntryService) RegisterEntry(ctx context.Context, userID string) (*domain.TimeEntry, error) {
 	last, err := s.repo.GetLastByUser(ctx, userID)
 	if err != nil {
-		return nil, apperr.Internal("erro ao consultar último registro")
+		return nil, apperr.Internal("erro ao consultar último registro", err)
 	}
 
 	nextType := domain.ClockIn
@@ -36,7 +36,7 @@ func (s *TimeEntryService) RegisterEntry(ctx context.Context, userID string) (*d
 	}
 
 	if err := s.repo.Create(ctx, entry); err != nil {
-		return nil, apperr.Internal("erro ao registrar ponto")
+		return nil, apperr.Internal("erro ao registrar ponto", err)
 	}
 	return entry, nil
 }

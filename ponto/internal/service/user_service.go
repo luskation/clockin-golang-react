@@ -35,7 +35,7 @@ func (s *UserService) Create(ctx context.Context, u *domain.User) error {
 	}
 	hashed, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return apperr.Internal("erro ao gerar hash")
+		return apperr.Internal("erro ao gerar hash", err)
 	}
 	u.Password = string(hashed)
 	return s.repo.Create(ctx, u)
@@ -83,7 +83,7 @@ func (s *UserService) UpdatePassword(ctx context.Context, id, newPassword string
 	}
 	hashed, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
 	if err != nil {
-		return apperr.Internal("erro ao gerar hash")
+		return apperr.Internal("erro ao gerar hash", err)
 	}
 	return s.repo.UpdatePassword(ctx, id, string(hashed))
 }
