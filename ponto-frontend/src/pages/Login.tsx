@@ -1,31 +1,9 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
+import { useLiveClock } from "../hooks/useLiveClock";
+import { formatDate, formatTime } from "../utils/datetime";
 import styles from "./Login.module.css";
-
-function useLiveClock() {
-  const [now, setNow] = useState(new Date());
-
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  return now;
-}
-
-function formatTime(date: Date) {
-  return date.toLocaleTimeString("pt-BR", { hour12: false });
-}
-
-function formatDate(date: Date) {
-  const formatted = date.toLocaleDateString("pt-BR", {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-  });
-  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
-}
 
 export default function Login() {
   const now = useLiveClock();
