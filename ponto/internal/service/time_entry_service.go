@@ -6,14 +6,23 @@ import (
 
 	"github.com/luskation/ponto/internal/apperr"
 	"github.com/luskation/ponto/internal/domain"
-	"github.com/luskation/ponto/internal/repository"
 )
 
-type TimeEntryService struct {
-	repo *repository.TimeEntryRepository
+type timeEntryRepository interface {
+	Create(ctx context.Context, e *domain.TimeEntry) error
+	GetLastByUser(ctx context.Context, userID string) (*domain.TimeEntry, error)
+	GetByID(ctx context.Context, id string) (*domain.TimeEntry, error)
+	Update(ctx context.Context, e *domain.TimeEntry) error
+	Delete(ctx context.Context, id string) error
+	ListByUser(ctx context.Context, userID string, page, limit int) ([]domain.TimeEntry, int, error)
+	ListAll(ctx context.Context, page, limit int) ([]domain.TimeEntry, int, error)
 }
 
-func NewTimeEntryService(repo *repository.TimeEntryRepository) *TimeEntryService {
+type TimeEntryService struct {
+	repo timeEntryRepository
+}
+
+func NewTimeEntryService(repo timeEntryRepository) *TimeEntryService {
 	return &TimeEntryService{repo: repo}
 }
 

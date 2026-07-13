@@ -6,16 +6,23 @@ import (
 
 	"github.com/luskation/ponto/internal/apperr"
 	"github.com/luskation/ponto/internal/domain"
-	"github.com/luskation/ponto/internal/repository"
 )
 
 var cnpjRegex = regexp.MustCompile(`^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$`)
 
-type CompanyService struct {
-	repo *repository.CompanyRepository
+type companyRepository interface {
+	Create(ctx context.Context, c *domain.Company) error
+	GetByID(ctx context.Context, id string) (*domain.Company, error)
+	List(ctx context.Context, page, limit int) ([]domain.Company, int, error)
+	Update(ctx context.Context, c *domain.Company) error
+	Delete(ctx context.Context, id string) error
 }
 
-func NewCompanyService(repo *repository.CompanyRepository) *CompanyService {
+type CompanyService struct {
+	repo companyRepository
+}
+
+func NewCompanyService(repo companyRepository) *CompanyService {
 	return &CompanyService{repo: repo}
 }
 

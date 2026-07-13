@@ -6,17 +6,26 @@ import (
 
 	"github.com/luskation/ponto/internal/apperr"
 	"github.com/luskation/ponto/internal/domain"
-	"github.com/luskation/ponto/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var emailRegex = regexp.MustCompile(`^[^\s@]+@[^\s@]+\.[^\s@]+$`)
 
-type UserService struct {
-	repo *repository.UserRepository
+type userRepository interface {
+	Create(ctx context.Context, u *domain.User) error
+	GetByID(ctx context.Context, id string) (*domain.User, error)
+	GetByEmail(ctx context.Context, email string) (*domain.User, error)
+	List(ctx context.Context, page, limit int) ([]domain.User, int, error)
+	Update(ctx context.Context, u *domain.User) error
+	UpdatePassword(ctx context.Context, id, hashedPassword string) error
+	Delete(ctx context.Context, id string) error
 }
 
-func NewUserService(repo *repository.UserRepository) *UserService {
+type UserService struct {
+	repo userRepository
+}
+
+func NewUserService(repo userRepository) *UserService {
 	return &UserService{repo: repo}
 }
 
