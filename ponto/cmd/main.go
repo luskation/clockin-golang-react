@@ -14,10 +14,11 @@ import (
 )
 
 func main() {
-	// Carrega variáveis do .env
+	// Carrega variáveis do .env (dev local). Em containers as variáveis já
+	// vêm do ambiente, então a ausência do arquivo não é um erro fatal.
 	if err := godotenv.Load(".env"); err != nil {
 		if err := godotenv.Load("../.env"); err != nil {
-			log.Fatalf("erro ao carregar .env: %v", err)
+			log.Println("nenhum .env encontrado, seguindo com variáveis de ambiente do sistema")
 		}
 	}
 
