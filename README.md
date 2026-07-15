@@ -1,6 +1,6 @@
-# ⏱️ Ponto
+# ⏱️ Cronos
 
-Sistema full-stack de controle de ponto para empresas — múltiplas empresas, usuários com papéis distintos (admin/colaborador) e registro de entrada/saída com um clique.
+Sistema full-stack de controle de ponto desenvolvido para a **Comp Júnior** — múltiplas empresas, usuários com papéis distintos (admin/colaborador) e registro de entrada/saída com um clique.
 
 ![Go](https://img.shields.io/badge/Go-1.26-00ADD8?style=flat&logo=go&logoColor=white)
 ![Gin](https://img.shields.io/badge/Gin-1.12-00ADD8?style=flat)
@@ -33,7 +33,7 @@ Sistema full-stack de controle de ponto para empresas — múltiplas empresas, u
 
 ## 🧭 Sobre o projeto
 
-O **Ponto** resolve um problema real de empresas júnior/pequenas equipes: controlar entrada e saída de funcionários sem planilha. Um admin cadastra empresas e usuários; cada colaborador bate o ponto com um clique e o sistema decide sozinho se é entrada ou saída, com base no último registro.
+O **Cronos** resolve um problema real de empresas júnior/pequenas equipes: controlar entrada e saída de funcionários sem planilha. Um admin cadastra empresas e usuários; cada colaborador bate o ponto com um clique e o sistema decide sozinho se é entrada ou saída, com base no último registro.
 
 Construído do zero — modelagem, API, autenticação, frontend, testes e containerização — como projeto full-stack de portfólio.
 

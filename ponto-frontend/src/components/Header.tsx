@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser, logout } from "../services/auth";
+import mark from "../assets/brand/mark-white.svg";
 import styles from "./Header.module.css";
 
 export default function Header() {
@@ -16,7 +17,8 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <Link to="/" className={styles.brand} onClick={() => setMenuOpen(false)}>
-        Ponto
+        <img className={styles.brandMark} src={mark} alt="" aria-hidden="true" />
+        Cronos
       </Link>
 
       <button

@@ -98,6 +98,11 @@
   color: var(--color-brass);
 }
 
+.roleBadge[data-role="employee"] {
+  border-color: var(--color-teal);
+  color: var(--color-teal);
+}
+
 .actions {
   text-align: right;
   white-space: nowrap;

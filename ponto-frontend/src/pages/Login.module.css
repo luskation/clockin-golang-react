@@ -37,7 +37,13 @@
   margin: var(--space-5) 0;
 }
 
+.brandMark {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
 .brand {
+  margin-top: var(--space-3);
   font-size: var(--text-xl);
 }
 

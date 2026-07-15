@@ -1,15 +1,17 @@
 :root {
-  /* Cor — paleta "relógio de ponto": azul-carvão + latão, sem preto puro nem creme */
-  --color-ink: #1c2333;
-  --color-ink-soft: #2a3346;
-  --color-brass: #c08a3e;
-  --color-brass-soft: #d9ab6b;
-  --color-paper: #eef1f0;
+  /* Cor — paleta oficial Comp Júnior: azul-marinho + dourado, com teal como acento secundário */
+  --color-ink: #0c1f3f;
+  --color-ink-soft: #16305f;
+  --color-brass: #ffc107;
+  --color-brass-soft: #ffd454;
+  --color-teal: #218fa6;
+  --color-teal-soft: #4fabbf;
+  --color-paper: #f2f5f9;
   --color-surface: #ffffff;
-  --color-graphite: #5b6472;
-  --color-border: #d7dbdd;
-  --color-success: #3e7a5d;
-  --color-alert: #b0483a;
+  --color-graphite: #55677e;
+  --color-border: #dbe2ec;
+  --color-success: #218a5a;
+  --color-alert: #c23b3b;
 
   /* Tipografia */
   --font-display: "Space Grotesk", "Segoe UI", sans-serif;

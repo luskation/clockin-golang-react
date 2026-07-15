@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { login } from "../services/auth";
 import { useLiveClock } from "../hooks/useLiveClock";
 import { formatDate, formatTime } from "../utils/datetime";
+import mark from "../assets/brand/mark-white.svg";
 import styles from "./Login.module.css";
 
 export default function Login() {
@@ -33,10 +34,10 @@ export default function Login() {
         <span className={styles.date}>{formatDate(now)}</span>
         <span className={styles.time}>{formatTime(now)}</span>
         <div className={styles.divider} />
-        <h1 className={styles.brand}>Ponto</h1>
+        <img className={styles.brandMark} src={mark} alt="" aria-hidden="true" />
+        <h1 className={styles.brand}>Cronos</h1>
         <p className={styles.tagline}>
-          Entrada e saída registradas na hora certa, para times de qualquer
-          tamanho.
+          Entrada e saída registradas na hora certa, para o time da Comp Júnior.
         </p>
       </aside>
 
