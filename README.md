@@ -134,7 +134,14 @@ docker compose up -d --build
 - Backend: `localhost:8080`
 - Postgres: `localhost:5432`
 
-As migrations ainda precisam ser aplicadas manualmente (ver abaixo).
+As migrations ainda precisam ser aplicadas manualmente (ver abaixo). A última migration (`000004_seed_demo_data`) já cria uma empresa e dois logins prontos para testar:
+
+| Papel | E-mail | Senha |
+|---|---|---|
+| Admin | `admin@compjunior.com` | `admin123` |
+| Colaborador | `colaborador@compjunior.com` | `colab123` |
+
+⚠️ São credenciais de demonstração para dev/teste local — remova essa migration (ou seus dados) antes de qualquer deploy real.
 
 ### Opção 2 — backend local (Go fora do container)
 
