@@ -26,7 +26,9 @@ func NewTimeEntryService(repo timeEntryRepository) *TimeEntryService {
 	return &TimeEntryService{repo: repo}
 }
 
-// RegisterEntry bate o ponto, alternando entre clock_in e clock_out.
+// RegisterEntry decide o tipo do registro a partir do último, em vez de o
+// cliente informar clock_in/clock_out — evita que uma falha no app do usuário
+// gere dois clock_in seguidos e distorça o histórico de horas trabalhadas.
 func (s *TimeEntryService) RegisterEntry(ctx context.Context, userID string) (*domain.TimeEntry, error) {
 	last, err := s.repo.GetLastByUser(ctx, userID)
 	if err != nil {

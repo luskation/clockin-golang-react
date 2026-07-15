@@ -30,6 +30,9 @@ func (r *TimeEntryRepository) GetLastByUser(ctx context.Context, userID string) 
 	err := r.db.QueryRow(ctx, query, userID).
 		Scan(&e.ID, &e.UserID, &e.Type, &e.RecordedAt, &e.Note, &e.CreatedAt)
 	if err != nil {
+		// Nenhum registro anterior não é um erro — é o estado normal do
+		// primeiro ponto do usuário. O service usa esse nil para decidir
+		// que o próximo registro é um clock_in.
 		if err == pgx.ErrNoRows {
 			return nil, nil
 		}

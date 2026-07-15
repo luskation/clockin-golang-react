@@ -98,6 +98,8 @@ func (s *UserService) UpdatePassword(ctx context.Context, id, newPassword string
 }
 
 func (s *UserService) Delete(ctx context.Context, requesterID, id string) error {
+	// Um admin não pode se autoexcluir: evita a empresa ficar sem nenhum
+	// admin restante (ninguém mais poderia gerenciar usuários depois).
 	if requesterID == id {
 		return apperr.BadRequest("não é possível excluir o próprio usuário")
 	}

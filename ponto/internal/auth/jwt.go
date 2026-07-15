@@ -36,6 +36,9 @@ func ParseToken(tokenStr string) (*Claims, error) {
 	return claims, nil
 }
 
+// GenerateResetToken carrega só Subject (userID) e uma expiração curta — o
+// fluxo de reset só precisa provar posse da conta, não autoriza nada, então
+// não leva Role. É lido especificamente por ParseResetToken, não por ParseToken.
 func GenerateResetToken(userID string) (string, error) {
 	claims := jwt.RegisteredClaims{
 		Subject:   userID,
