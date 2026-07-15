@@ -252,6 +252,8 @@ export default function Users() {
             />
             {fieldErrors.email && <p className={styles.fieldError}>{fieldErrors.email}</p>}
 
+            {/* Senha e empresa só aparecem na criação: o endpoint de update
+                no backend não altera esses dois campos, só nome/e-mail/papel. */}
             {!editing && (
               <>
                 <label className={styles.label} htmlFor="user-password">

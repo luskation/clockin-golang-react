@@ -1,4 +1,6 @@
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Precisa ficar idêntico a cnpjRegex em ponto/internal/service/company_service.go —
+// validar aqui só evita uma viagem à API para um erro que o backend rejeitaria de qualquer forma.
 export const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
 
 export function isValidEmail(value: string): boolean {

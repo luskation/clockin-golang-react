@@ -45,6 +45,8 @@ export default function Dashboard() {
 
   useEffect(loadEntries, [page]);
 
+  // Só um preview do rótulo do botão — quem decide o tipo de verdade é o
+  // backend (RegisterEntry), a partir do último registro real no banco.
   const lastEntry = page === 1 ? entries[0] : undefined;
   const nextType: EntryType = lastEntry?.type === "clock_in" ? "clock_out" : "clock_in";
 
