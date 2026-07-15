@@ -112,6 +112,8 @@ Backend em camadas: `handler` (HTTP) → `service` (regra de negócio) → `repo
 │       ├── hooks/, utils/    # useLiveClock, validação, formatação de data
 │       ├── styles/           # tokens de design e reset global
 │       └── Dockerfile, nginx.conf
+├── docs/
+│   └── ponto-api.postman_collection.json   # collection Postman/Insomnia
 └── docker-compose.yml        # sobe banco + backend + frontend juntos
 ```
 
@@ -181,7 +183,9 @@ Base: `/api/v1` · Auth via header `Authorization: Bearer <token>`.
 | PUT | `/time-entries/:id` | dono ou admin | Corrige um registro |
 | DELETE | `/time-entries/:id` | dono ou admin | Remove um registro |
 
-Collection pronta para testar em [`ponto/requests.http`](./ponto/requests.http) (extensão REST Client do VS Code).
+Collections prontas para testar:
+- [`docs/ponto-api.postman_collection.json`](./docs/ponto-api.postman_collection.json) — importável no Postman ou no Insomnia (Import/Export → Postman v2.1). Já vem com scripts que capturam token/IDs das respostas automaticamente.
+- [`ponto/requests.http`](./ponto/requests.http) — para a extensão REST Client do VS Code.
 
 ## 🧪 Qualidade e testes
 
